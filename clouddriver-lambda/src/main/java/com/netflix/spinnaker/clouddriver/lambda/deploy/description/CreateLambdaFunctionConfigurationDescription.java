@@ -30,6 +30,7 @@ public class CreateLambdaFunctionConfigurationDescription
   String functionName;
   String description;
   String handler;
+  Boolean snapstart;
   Integer memorySize;
   String role;
   String runtime;

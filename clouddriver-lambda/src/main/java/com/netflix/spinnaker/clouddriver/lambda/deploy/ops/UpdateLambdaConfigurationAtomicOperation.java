@@ -21,6 +21,7 @@ import com.amazonaws.services.elasticloadbalancingv2.AmazonElasticLoadBalancing;
 import com.amazonaws.services.elasticloadbalancingv2.model.*;
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.*;
+import com.amazonaws.services.lambda.model.Runtime;
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
 import com.netflix.spinnaker.clouddriver.lambda.cache.model.LambdaFunction;
 import com.netflix.spinnaker.clouddriver.lambda.deploy.description.CreateLambdaFunctionConfigurationDescription;
@@ -71,6 +72,14 @@ public class UpdateLambdaConfigurationAtomicOperation
             .withKMSKeyArn(description.getKmskeyArn())
             .withTracingConfig(description.getTracingConfig())
             .withRuntime(description.getRuntime());
+
+    if (description.getRuntime().equals(Runtime.Java11.toString())) {
+      if (description.getSnapstart()) {
+        request.setSnapStart(new SnapStart().withApplyOn(SnapStartApplyOn.PublishedVersions));
+      } else {
+        request.setSnapStart(new SnapStart().withApplyOn(SnapStartApplyOn.None));
+      }
+    }
 
     if (null != description.getEnvVariables()) {
       request.setEnvironment(new Environment().withVariables(description.getEnvVariables()));

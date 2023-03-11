@@ -55,7 +55,9 @@ subprojects {
     sourceSets.main.groovy.srcDirs += ["src/main/java"]
 
     dependencies {
-      implementation enforcedPlatform("io.spinnaker.kork:kork-bom:$korkVersion")
+      implementation enforcedPlatform("io.spinnaker.kork:kork-bom:$korkVersion") {
+        exclude group: 'com.amazonaws', module: 'aws-java-sdk-lambda'
+      }
 
       annotationProcessor platform("io.spinnaker.kork:kork-bom:$korkVersion")
       annotationProcessor "org.projectlombok:lombok"
