@@ -43,3 +43,9 @@ dependencies {
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"
 }
+
+configurations {
+  compileClasspath {
+    resolutionStrategy.force "com.amazonaws:aws-java-sdk-lambda:1.12.351"
+  }
+}

@@ -30,6 +30,9 @@ import com.amazonaws.services.lambda.model.CreateFunctionRequest;
 import com.amazonaws.services.lambda.model.CreateFunctionResult;
 import com.amazonaws.services.lambda.model.Environment;
 import com.amazonaws.services.lambda.model.FunctionCode;
+import com.amazonaws.services.lambda.model.Runtime;
+import com.amazonaws.services.lambda.model.SnapStart;
+import com.amazonaws.services.lambda.model.SnapStartApplyOn;
 import com.amazonaws.services.lambda.model.VpcConfig;
 import com.netflix.frigga.Names;
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
@@ -85,6 +88,14 @@ public class CreateLambdaAtomicOperation
 
     request.setCode(code);
     request.setTags(objTag);
+
+    if (description.getRuntime().equals(Runtime.Java11.toString())) {
+      if (description.getSnapstart()) {
+        request.setSnapStart(new SnapStart().withApplyOn(SnapStartApplyOn.PublishedVersions));
+      } else {
+        request.setSnapStart(new SnapStart().withApplyOn(SnapStartApplyOn.None));
+      }
+    }
 
     Map<String, String> envVariables = description.getEnvVariables();
     if (null != envVariables) {

@@ -33,6 +33,7 @@ public class CreateLambdaFunctionConfigurationDescription
   Integer memorySize;
   String role;
   String runtime;
+  Boolean snapstart;
   Integer timeout;
   List<String> subnetIds;
   List<String> securityGroupIds;
